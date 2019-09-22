@@ -1,0 +1,41 @@
+参考的
+https://blog.csdn.net/yuntongsf/article/details/78207464
+
+配置内核
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 clean
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 vexpress_defconfig
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 menuconfig
+配置
+	General Setup
+	  勾选 Initial RAM filesystem and Ram disk(initramfs/initrd) support
+	Device Drivers
+	  勾选 Block devices
+	        勾选 RAM block device support
+	        Default number of RAM disks
+	        Default RAM disk size(kbytes)
+
+code ./out_vexpress_4_19/.config
+修改 CONFIG_CMDLINE 为
+CONFIG_CMDLINE="initrd=0x53000000,0x200000 root=/dev/ram rw init=/linuxrc console=ttyAMA0 mem=32M"
+
+编译内核
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 -j8
+
+按参考连接，以下这段和直接修改内核参数是一样的结果，等手上有了真的板子再测试
+----------------------------------------------------------------
+修改uboot参数
+set bootargs 'initrd=0x53000000,0x200000 root=/dev/ram rw init=/linuxrc console=ttyAMA0 mem=32M'
+备注：
+(0x53000000,0x200000-ramdisk镜像在内存的加载地址。0x200000:大小)
+----------------------------------------------------------------
+
+gen_ramdisk.sh和mk_ramdisk.sh都可以生成ramdisk
+
+qemu-system-arm \
+	-M vexpress-a9 \
+	-m 512M \
+	-kernel ~/downloads/linux-4.19/out_vexpress_4_19/arch/arm/boot/zImage \
+	-dtb ~/downloads/linux-4.19/out_vexpress_4_19/arch/arm/boot/dts/vexpress-v2p-ca9.dtb \
+	-nographic \
+	-append "root=/dev/ram console=ttyAMA0 init=/linuxrc" \
+	-initrd ~/downloads/ramdisk.gz

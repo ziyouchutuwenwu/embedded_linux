@@ -1,0 +1,22 @@
+需要sudo apt install gdb-multiarch
+
+make config以后，.config文件里面检查有没有这个
+CONFIG_DEBUG_INFO=y
+
+编译，运行
+qemu-system-arm \
+	-M vexpress-a9 \
+	-m 512M \
+	-kernel ~/downloads/linux-4.19/out_vexpress_4_19/arch/arm/boot/zImage \
+	-dtb ~/downloads/linux-4.19/out_vexpress_4_19/arch/arm/boot/dts/vexpress-v2p-ca9.dtb \
+	-nographic \
+	-append "console=ttyAMA0" \
+	-s -S \
+	-serial mon:stdio
+
+gdb-multiarch /home/mmc/downloads/linux-4.19/out_vexpress_4_19/arch/arm/boot/compressed/vmlinux
+(gdb) target remote localhost:1234
+(gdb) b start_kernel
+(gdb) c
+
+gdb前端界面推荐vscode + native debug插件

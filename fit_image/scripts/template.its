@@ -1,0 +1,45 @@
+/dts-v1/;
+
+/ {
+    description = "U-Boot uImage source file";
+
+    images {
+        kernel@xxx {
+            description = "Unify(TODO) Linux kernel";
+            data = /incbin/("KERLEL_UIMAGE_TEMPLATE");
+            type = "kernel";
+            arch = "arm";
+            os = "linux";
+            compression = "none";
+            load = <KERNEL_ADDR>;
+            entry = <KERNEL_ADDR>;
+        };
+        fdt@xxx {
+            description = "Flattened Device Tree blob";
+            data = /incbin/("DTB_TEMPLATE");
+            type = "flat_dt";
+            arch = "arm";
+            compression = "none";
+        };
+        ramdisk@xxx {
+            description = "Ramdisk";
+            data = /incbin/("RAMDISK_UIMAGE_TEMPLATE");
+            type = "ramdisk";
+            arch = "arm";
+            os = "linux";
+            compression = "gzip";
+            load = <RAMDISK_ADDR>;
+            entry = <RAMDISK_ADDR>;
+        };
+    };
+
+    configurations {
+        default = "conf@xxx";
+        conf@xxx {
+            description = "Boot Linux kernel with FDT blob";
+            kernel = "kernel@xxx";
+            fdt = "fdt@xxx";
+            ramdisk = "ramdisk@xxx";
+        };
+    };
+};

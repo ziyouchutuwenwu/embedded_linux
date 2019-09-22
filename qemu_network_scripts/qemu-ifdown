@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ ! -n "$1" ] || [ ! -n "$2" ] ;then
+    echo "usage: $0 BRIDGE_NETWORK_NAME VNET_NAME"
+    echo "sample: $0 br-d4c8f9d919f8 vnet0"
+    exit 1
+fi
+
+BRIDGE_NETWORK_NAME=$1
+VNET_NAME=$2
+
+sudo brctl delif $BRIDGE_NETWORK_NAME $VNET_NAME
+sudo tunctl -d $VNET_NAME
+sudo brctl show

@@ -1,0 +1,18 @@
+安装编译需要的工具
+sudo apt install bison flex -y
+
+这里下载最新的uboot代码
+http://ftp.denx.de/pub/u-boot/
+
+解压，编译
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_ca9x4_defconfig
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-
+
+
+qemu测试
+sudo apt install qemu-system-arm -y
+
+qemu-system-arm -M vexpress-a9 \
+     -kernel ~/downloads/u-boot-2019.07/u-boot \
+     -nographic \
+     -m 512M

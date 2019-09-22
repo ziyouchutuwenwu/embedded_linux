@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ ! -n "$1" ] || [ ! -n "$2" ] || [ ! -n "$3" ];then
+    echo "usage: $0 BRIDGE_NETWORK_NAME VNET_NAME VNET_IP"
+    echo "sample: $0 br-d4c8f9d919f8 vnet0 172.18.0.111"
+    exit 1
+fi
+
+BRIDGE_NETWORK_NAME=$1
+VNET_NAME=$2
+VNET_IP=$3
+
+sudo tunctl -t $VNET_NAME
+sudo ifconfig $VNET_NAME $VNET_IP
+sudo ifconfig $VNET_NAME up
+sudo brctl addif $BRIDGE_NETWORK_NAME $VNET_NAME
+sudo brctl show

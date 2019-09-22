@@ -1,0 +1,12 @@
+安装桥接需要的工具
+sudo apt-get install uml-utilities
+sudo apt-get install bridge-utils
+
+脚本参见qemu_network_scripts
+sudo ./qemu-ifup br-d4c8f9d919f8 vnet0 172.18.0.111
+
+测试
+sudo qemu-system-arm \
+   -M vexpress-a9 \
+   -net nic \
+   -net tap,ifname=vnet0,script=no,downscript=no
