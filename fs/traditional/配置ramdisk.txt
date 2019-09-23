@@ -14,22 +14,21 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 menuconfig
 	        Default number of RAM disks
 	        Default RAM disk size(kbytes)
 
+可选？？？
 code ./out_vexpress_4_19/.config
 修改 CONFIG_CMDLINE 为
-CONFIG_CMDLINE="initrd=0x53000000,0x200000 root=/dev/ram rw init=/linuxrc console=ttyAMA0 mem=32M"
+CONFIG_CMDLINE="root=/dev/ram0 rw init=/linuxrc console=ttyAMA0"
 
 编译内核
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 -j8
 
-按参考连接，以下这段和直接修改内核参数是一样的结果，等手上有了真的板子再测试
+测试发现，这段cmd_line可以在内核构建的时候编译生成
+如果是qemu-system-arm，也可以不构建，在append里面直接传
+如果是物理设备，可以修改uboot参数
 ----------------------------------------------------------------
 修改uboot参数
-set bootargs 'initrd=0x53000000,0x200000 root=/dev/ram rw init=/linuxrc console=ttyAMA0 mem=32M'
-备注：
-(0x53000000,0x200000-ramdisk镜像在内存的加载地址。0x200000:大小)
+set bootargs 'root=/dev/ram0 rw init=/linuxrc console=ttyAMA0'
 ----------------------------------------------------------------
-
-gen_ramdisk.sh和mk_ramdisk.sh都可以生成ramdisk
 
 qemu-system-arm \
 	-M vexpress-a9 \
@@ -37,5 +36,5 @@ qemu-system-arm \
 	-kernel ~/downloads/linux-4.19/out_vexpress_4_19/arch/arm/boot/zImage \
 	-dtb ~/downloads/linux-4.19/out_vexpress_4_19/arch/arm/boot/dts/vexpress-v2p-ca9.dtb \
 	-nographic \
-	-append "root=/dev/ram console=ttyAMA0 init=/linuxrc" \
+	-append "root=/dev/ram0 rw init=/linuxrc console=ttyAMA0" \
 	-initrd ~/downloads/ramdisk.gz

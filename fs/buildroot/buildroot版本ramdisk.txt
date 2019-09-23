@@ -19,7 +19,7 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 menuconfig
 
 code ./out_vexpress_4_19/.config
 修改CONFIG_CMDLINE为
-CONFIG_CMDLINE="initrd=0x53000000,0x200000 root=/dev/ram rw init=/linuxrc console=ttyAMA0 mem=32M"
+CONFIG_CMDLINE="root=/dev/ram0 rw init=/linuxrc console=ttyAMA0"
 
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 -j8
 
@@ -29,5 +29,5 @@ qemu-system-arm \
 	-kernel ~/downloads/linux-4.19/out_vexpress_4_19/arch/arm/boot/zImage \
 	-dtb ~/downloads/linux-4.19/out_vexpress_4_19/arch/arm/boot/dts/vexpress-v2p-ca9.dtb \
 	-nographic \
-	-append "root=/dev/ram console=ttyAMA0 init=/linuxrc" \
+	-append "root=/dev/ram0 rw init=/linuxrc console=ttyAMA0" \
 	-initrd ~/downloads/buildroot-2019.05.1/output/images/ramdisk.gz
