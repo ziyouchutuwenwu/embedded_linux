@@ -19,24 +19,6 @@ code include/configs/sun8i.h
 #define CONFIG_BOOTARGS      "console=ttyS0,115200 earlyprintk panic=5 rootwait " \
                              "mtdparts=spi32766.0:1M(uboot)ro,64k(dtb)ro,4M(kernel)ro,-(rootfs) root=31:03 rw rootfstype=jffs2"
 -----------------------------------------
-ramdisk需要修改
-#define CONFIG_BOOTCOMMAND   "sf probe 0; "                           \
-                             "sf read 0x41800000 0x100000 0x10000; "  \
-                             "sf read 0x41000000 0x110000 0x400000; " \
-                             "sf read 0x42000000 0x510000 0x388A28; " \
-                             "bootz 0x41000000 - 0x41800000"
-
-#define CONFIG_BOOTARGS      "console=ttyS0,115200 earlyprintk panic=5 rootwait " \
-                             "mtdparts=spi32766.0:1M(uboot)ro,64k(dtb)ro,4M(kernel)ro,-(rootfs) " \
-                             "root=/dev/ram0 rw init=/linuxrc initrd=0x42000000,0x388A28"
-
-调试方式：
-uboot下
-setenv bootcmd 'sf probe 0; sf read 0x41800000 0x100000 0x10000; sf read 0x41000000 0x110000 0x400000; sf read 0x42000000 0x510000 0x388A28; bootz 0x41000000 - 0x41800000'
-
-setenv bootargs 'console=ttyS0,115200 earlyprintk panic=5 rootwait mtdparts=spi32766.0:1M(uboot)rw,64k(dtb)ro,4M(kernel)ro,-(rootfs) root=/dev/ram0 rw init=/linuxrc initrd=0x42000000, 0x388A28'
-
------------------------------------------
 编译
 time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- 2>&1 | tee build.log
 
@@ -55,12 +37,7 @@ File systems
 		<*> Journalling Flash File System v2 (JFFS2) support
 如果需要支持uboot
 General Setup
-  勾选 Initial RAM filesystem and Ram disk(initramfs/initrd) support
-Device Drivers
-  勾选 Block devices
-        勾选 RAM block device support
-        Default number of RAM disks
-        Default RAM disk size(kbytes)
+  <*> Initial RAM filesystem and Ram disk(initramfs/initrd) support
 
 code arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts, 添加
 -----------------------------------------
@@ -85,22 +62,12 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- dtbs
 rootfs
 sudo mkfs.jffs2 -s 0x100 -e 0x10000 -p 0x1AF0000 -d ~/downloads/rootfs/ -o ../jffs2.img
 
-ramdisk制作脚本
-使用genext2_ramdisk.sh和mkfs_ext4_ramdisk.sh都可以
-
 jffs2版固件
 dd if=/dev/zero of=flashimg.bin bs=1M count=32
 dd if=$HOME/dev/embedded/lichee/zero/SPI_Flash/u-boot/u-boot-sunxi-with-spl.bin of=flashimg.bin bs=1K conv=notrunc
 dd if=$HOME/dev/embedded/lichee/zero/SPI_Flash/linux-zero-4.13.y/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dtb of=flashimg.bin bs=1K seek=1024 conv=notrunc
 dd if=$HOME/dev/embedded/lichee/zero/SPI_Flash/linux-zero-4.13.y/arch/arm/boot/zImage of=flashimg.bin bs=1K seek=1088 conv=notrunc
 dd if=$HOME/dev/embedded/lichee/zero/SPI_Flash/jffs2.img of=flashimg.bin bs=1K seek=5184 conv=notrunc
-
-ramdisk版固件
-dd if=/dev/zero of=flashimg.bin bs=1M count=32
-dd if=$HOME/dev/embedded/lichee/zero/SPI_Flash/u-boot/u-boot-sunxi-with-spl.bin of=flashimg.bin bs=1K conv=notrunc
-dd if=$HOME/dev/embedded/lichee/zero/SPI_Flash/linux-zero-4.13.y/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dtb of=flashimg.bin bs=1K seek=1024 conv=notrunc
-dd if=$HOME/dev/embedded/lichee/zero/SPI_Flash/linux-zero-4.13.y/arch/arm/boot/zImage of=flashimg.bin bs=1K seek=1088 conv=notrunc
-dd if=$HOME/dev/embedded/lichee/zero/SPI_Flash/ramdisk.gz of=flashimg.bin bs=1K seek=5184 conv=notrunc
 
 烧录固件
 git clone -b spi-rebase https://github.com/Icenowy/sunxi-tools.git
