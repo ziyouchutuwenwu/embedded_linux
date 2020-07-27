@@ -1,4 +1,0 @@
-参考链接：
-https://blog.csdn.net/goalietech/article/details/17733817
-
-ramdisk+jffs2做嵌入式混合文件系统
