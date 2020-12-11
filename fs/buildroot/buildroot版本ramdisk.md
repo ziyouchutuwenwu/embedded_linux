@@ -4,7 +4,7 @@
 
 ### make 默认 config
 
-```bash
+```sh
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 clean
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 vexpress_defconfig
 
@@ -12,11 +12,11 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 vexpress_de
 
 ### menuconfig
 
-```bash
+```sh
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 menuconfig
 ```
 
-```bash
+```sh
 配置，注意，勾选的必须要为*，不能是 M，这里调了若干小时。。。。。。。。。。。
 General Setup
 勾选 Initial RAM filesystem and Ram disk(initramfs/initrd) support
@@ -36,19 +36,19 @@ File system
 
 - 修改 CONFIG_CMDLINE 为
 
-```bash
+```sh
 CONFIG_CMDLINE="root=/dev/ram0 rw init=/linuxrc console=ttyAMA0"
 ```
 
 - make
 
-```bash
+```sh
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 -j8
 ```
 
 ## qemu 模拟
 
-```bash
+```sh
 qemu-system-arm \
  -M vexpress-a9 \
  -m 512M \

@@ -2,7 +2,7 @@
 
 ## busybox 下载
 
-```bash
+```sh
 https://busybox.net/downloads/
 ```
 
@@ -10,7 +10,7 @@ https://busybox.net/downloads/
 
 ### menuconfig
 
-```bash
+```sh
 settings
 Build options
 勾选 Build BusyBox as a static binary (no shared libs)
@@ -19,7 +19,7 @@ Build options
 
 ### make
 
-```bash
+```sh
 make install
 ```
 
@@ -31,7 +31,7 @@ make install
 
 - 需要的 etc 配置文件从这里下载
 
-```bash
+```sh
 http://files.cnblogs.com/files/pengdonglin137/etc.tar.gz
 ```
 
@@ -39,7 +39,7 @@ etc/init.d/rcS 里面可以自定义一些命令配置，比如，ip 地址，�
 
 ## qemu 模拟
 
-```bash
+```sh
 qemu-system-arm \
  -M vexpress-a9 \
  -m 512M \
@@ -52,6 +52,6 @@ qemu-system-arm \
 
 ## 目录不可写的话，这个命令解决
 
-```bash
+```sh
 mount -o remount rw /
 ```

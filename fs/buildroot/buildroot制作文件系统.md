@@ -2,7 +2,7 @@
 
 ## 下载 buildroot
 
-```bash
+```sh
 https://buildroot.org/downloads/buildroot-2019.05.1.tar.gz
 ```
 
@@ -12,7 +12,7 @@ https://buildroot.org/downloads/buildroot-2019.05.1.tar.gz
 
 - 内核需要修改编译选项
 
-```bash
+```sh
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 menuconfig
 
 勾选下面这个，否则会出现 can't open /dev/null: No such file or directory
@@ -23,7 +23,7 @@ Automount devtmpfs at /dev, after the kernel mounted the rootfs
 
 ## 重新编译内核
 
-```bash
+```sh
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 -j8
 ```
 
@@ -32,7 +32,7 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 -j8
 
 ## qemu 启动
 
-```bash
+```sh
 qemu-system-arm \
  -M vexpress-a9 \
  -m 512M \

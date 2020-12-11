@@ -4,7 +4,7 @@
 
 ## 先 make 一下默认配置
 
-```bash
+```sh
 cd \$UBOOT
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_ca9x4_defconfig
 ```
@@ -19,13 +19,13 @@ CONFIG_FIT=y
 
 ## make
 
-```bash
+```sh
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-
 ```
 
 ## pack_all.sh 是打包的例子
 
-```bash
+```sh
 现在内存地址仅作参考
 内核在 0x80008000
 ramdisk 在 0x53000000

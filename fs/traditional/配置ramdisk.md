@@ -6,7 +6,7 @@
 
 - menuconfig
 
-```bash
+```sh
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 clean
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 vexpress_defconfig
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 menuconfig
@@ -14,7 +14,7 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 menuconfig
 
 - 配置
 
-```bash
+```sh
 General Setup
   勾选 Initial RAM filesystem and Ram disk(initramfs/initrd) support
 Device Drivers
@@ -27,32 +27,32 @@ Device Drivers
 - code ./out_vexpress_4_19/.config
   修改 CONFIG_CMDLINE 为
 
-```bash
+```sh
 CONFIG_CMDLINE="root=/dev/ram0 rw init=/linuxrc console=ttyAMA0"
 ```
 
 ## 编译内核
 
-```bash
+```sh
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- O=./out_vexpress_4_19 -j8
 ```
 
 - 测试发现，这段 cmd_line 可以在内核构建的时候编译生成
 
-```bash
+```sh
 如果是 qemu-system-arm，也可以不构建，在 append 里面直接传
 如果是物理设备，可以修改 uboot 参数
 ```
 
 - 修改 uboot 参数
 
-```bash
+```sh
 set bootargs 'root=/dev/ram0 rw init=/linuxrc console=ttyAMA0'
 ```
 
 ## qemu 启动
 
-```bash
+```sh
 qemu-system-arm \
  -M vexpress-a9 \
  -m 512M \
