@@ -1,6 +1,6 @@
 # gdb 内核调试
 
-## 需要
+## 安装需要的工具
 
 ```sh
 sudo apt install gdb-multiarch

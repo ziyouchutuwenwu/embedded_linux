@@ -2,28 +2,30 @@
 
 [参考地址](http://www.bankaiyuan.com/t/246)
 
-## 先 make 一下默认配置
+## 步骤
+
+先 make 一下默认配置
 
 ```sh
-cd \$UBOOT
+cd $UBOOT
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_ca9x4_defconfig
 ```
 
-## code .config，添加 fit 模式的支持
-
-- 注意，修改下面为
+vim .config，添加 fit 模式的支持
 
 ```python
 CONFIG_FIT=y
 ```
 
-## make
+make
 
 ```sh
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-
 ```
 
-## pack_all.sh 是打包的例子
+## 备注
+
+pack_all.sh 是打包的例子
 
 ```sh
 现在内存地址仅作参考
@@ -31,4 +33,4 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-
 ramdisk 在 0x53000000
 ```
 
-## 暂时没有设备测试，等以后拿到设备以后，逐步调试
+暂时没有设备测试，等以后拿到设备以后，逐步调试
